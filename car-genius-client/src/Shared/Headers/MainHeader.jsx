@@ -24,7 +24,7 @@ const MainHeader = () => {
     </>
   );
   return (
-    <nav className="lg:px-32 lg:py-4">
+    <nav className="lg:px-36 lg:py-4">
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
