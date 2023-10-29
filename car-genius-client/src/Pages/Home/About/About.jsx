@@ -1,5 +1,5 @@
-import SectionHeading from "../Section/SectionHeading";
-import SectionTitle from "../Section/SectionTitle";
+import SectionHeading from "../../../Shared/Section/SectionHeading";
+import SectionTitle from "../../../Shared/Section/SectionTitle";
 import PrimaryButton from "../../../Shared/Buttons/PrimaryButton";
 import aboutPerson from "../../../assets/images/about_us/person.jpg";
 import parts from "../../../assets/images/about_us/parts.jpg";
