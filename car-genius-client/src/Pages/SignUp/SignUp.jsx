@@ -20,6 +20,7 @@ const SignUp = () => {
       .then((userCredintial) => {
         const user = userCredintial.user;
         console.log(user);
+        alert(`${name} sign up succesfully`);
       })
       .catch((error) => {
         alert(error.message);
