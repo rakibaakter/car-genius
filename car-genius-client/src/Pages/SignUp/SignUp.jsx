@@ -1,10 +1,11 @@
+import { updateProfile } from "firebase/auth";
 import login from "../../assets/images/login/login.svg";
 import { useAuthHook } from "../../providers/Hooks/useAuthHook";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
 import { Link } from "react-router-dom";
 
 const SignUp = () => {
-  const { userByEmailPassword } = useAuthHook();
+  const { userByEmailPassword, user } = useAuthHook();
 
   // console.log(userByEmailPassword);
 
@@ -14,11 +15,17 @@ const SignUp = () => {
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
+    console.log(name, email, password);
 
-    // console.log(name, email, password);
     userByEmailPassword(email, password)
       .then((userCredintial) => {
-        const user = userCredintial.user;
+        console.log();
+        userCredintial.user;
+
+        updateProfile(userCredintial.user, {
+          displayName: name,
+        });
+
         console.log(user);
         alert(`${name} sign up succesfully`);
       })
