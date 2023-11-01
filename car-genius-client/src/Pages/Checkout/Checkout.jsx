@@ -4,7 +4,7 @@ import { useAuthHook } from "../../providers/Hooks/useAuthHook";
 
 const Checkout = () => {
   const { user } = useAuthHook();
-  const { _id, title, price } = useLoaderData();
+  const { _id, title, price, img } = useLoaderData();
 
   const handleCheckOut = (event) => {
     event.preventDefault();
@@ -12,15 +12,33 @@ const Checkout = () => {
     const name = user?.name || form.name.value;
     const date = form.date.value;
     const email = user?.email || form.email.value;
-    // const price = form.price.value;
+    const price = form.price.value;
 
     const order = {
       customerName: name,
       email,
       date,
       _id,
+      title,
+      price,
+      img,
     };
-    console.log(order);
+    // console.log(order);
+
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.insertedId) {
+          alert("order added");
+        }
+      });
   };
 
   return (

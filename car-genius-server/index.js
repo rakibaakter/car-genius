@@ -29,6 +29,7 @@ async function run() {
 
     // access data of services from carGenius database
     const serviceCollection = client.db("carGenius").collection("services");
+    const bookingsCollection = client.db("carGenius").collection("bookings");
 
     app.get("/services", async (req, res) => {
       const cursor = serviceCollection.find();
@@ -42,10 +43,19 @@ async function run() {
       //   console.log(id);
       const query = { _id: new ObjectId(id) };
       const options = {
-        projection: { title: 1, price: 1 },
+        projection: { title: 1, price: 1, img: 1 },
       };
 
       const result = await serviceCollection.findOne(query, options);
+
+      res.send(result);
+    });
+
+    // bookings info
+    app.post("/bookings", async (req, res) => {
+      const booking = req.body;
+      console.log(booking);
+      const result = await bookingsCollection.insertOne(booking);
 
       res.send(result);
     });
