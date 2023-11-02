@@ -24,6 +24,16 @@ const MainHeader = () => {
       <li>
         <Link to="/contact">Contact</Link>
       </li>
+      {user && (
+        <li>
+          <Link
+            to="/orders
+          "
+          >
+            Orders
+          </Link>
+        </li>
+      )}
     </>
   );
   return (
