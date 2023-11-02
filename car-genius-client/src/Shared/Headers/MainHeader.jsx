@@ -2,8 +2,11 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import OutlineButton from "../Buttons/OutlineButton";
 import { AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import { useAuthHook } from "../../providers/Hooks/useAuthHook";
 
 const MainHeader = () => {
+  const { user, logOut } = useAuthHook();
+
   const navItems = (
     <>
       <li>
@@ -67,7 +70,19 @@ const MainHeader = () => {
             <AiOutlineShoppingCart />
             <AiOutlineSearch />
           </span>
-          <OutlineButton>Appointment</OutlineButton>
+          {/* <OutlineButton>Appointment</OutlineButton> */}
+          {user ? (
+            <div>
+              <span className="mx-2">{user?.displayName}</span>
+              <button onClick={logOut}>
+                <OutlineButton>LogOut</OutlineButton>
+              </button>
+            </div>
+          ) : (
+            <Link to="/login">
+              <OutlineButton>Log in</OutlineButton>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

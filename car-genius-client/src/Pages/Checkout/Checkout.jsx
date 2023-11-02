@@ -12,7 +12,7 @@ const Checkout = () => {
     const name = user?.name || form.name.value;
     const date = form.date.value;
     const email = user?.email || form.email.value;
-    const price = form.price.value;
+    // const price = form.price.value;
 
     const order = {
       customerName: name,
