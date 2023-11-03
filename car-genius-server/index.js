@@ -17,6 +17,22 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
+// custom middleware
+const verifyToken = async (req, res, next) => {
+  const token = req.cookies.token;
+  console.log(token);
+  if (!token) {
+    return res.status(401).send({ message: "unauthorized" });
+  }
+  jwt.verify(token, process.env.ACCESS_SECRET_TOKEN, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
+
 // mongodb setup
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.bysunmk.mongodb.net/?retryWrites=true&w=majority`;
@@ -80,8 +96,13 @@ async function run() {
     });
 
     // bookings info
-    app.get("/bookings", async (req, res) => {
+    app.get("/bookings", verifyToken, async (req, res) => {
       console.log(req.query.email);
+      console.log("user of verified token", req.user);
+
+      if (req.user.email !== req.query.email) {
+        return res.status(403).send({ message: "forbidden" });
+      }
 
       let query = {};
       if (req.query?.email) {
@@ -90,7 +111,7 @@ async function run() {
 
       const result = await bookingsCollection.find(query).toArray();
 
-      console.log(req.cookies.token);
+      // console.log(req.cookies.token);
       res.send(result);
     });
 

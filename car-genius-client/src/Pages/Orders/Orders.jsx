@@ -7,10 +7,11 @@ const Orders = () => {
   const { user } = useAuthHook();
   const [orders, setOrders] = useState([]);
 
-  const url = `http://localhost:5000/bookings?email=${user.email}`;
+  const url = `http://localhost:5000/bookings?email=${user?.email}`;
 
   useEffect(() => {
     axios.get(url, { withCredentials: true }).then((res) => {
+      console.log(res.data);
       setOrders(res.data);
     });
   }, [url]);
