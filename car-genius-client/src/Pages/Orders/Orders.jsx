@@ -12,10 +12,30 @@ const Orders = () => {
     fetch(url)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setOrders(data);
       });
   }, [url]);
+
+  // for delete an item
+  const handleDeleteItem = (id) => {
+    console.log(id);
+    const proceed = confirm("Are you want to delete?");
+    if (proceed) {
+      fetch(`http://localhost:5000/bookings/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.deletedCount > 0) {
+            alert("Deleted");
+            const remaining = orders.filter((order) => order._id !== id);
+            setOrders(remaining);
+          }
+        });
+    }
+  };
 
   return (
     <div>
@@ -32,7 +52,7 @@ const Orders = () => {
                     className="h-6 w-6"
                     fill="none"
                     viewBox="0 0 24 24"
-                    stroke="currentColor"
+                    stroke="#FF3811"
                   >
                     <path
                       strokeLinecap="round"
@@ -50,7 +70,11 @@ const Orders = () => {
           </thead>
           <tbody>
             {orders.map((order) => (
-              <OrderItem key={order._id} order={order} />
+              <OrderItem
+                key={order._id}
+                order={order}
+                handleDeleteItem={handleDeleteItem}
+              />
             ))}
           </tbody>
         </table>

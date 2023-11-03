@@ -1,18 +1,21 @@
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
 
-const OrderItem = ({ order }) => {
+const OrderItem = ({ order, handleDeleteItem }) => {
   const { _id, date, title, img, price } = order;
 
   return (
     <tr>
       <th>
-        <button className="btn btn-circle btn-sm">
+        <button
+          onClick={() => handleDeleteItem(_id)}
+          className="btn btn-circle btn-sm"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
-            stroke="currentColor"
+            stroke="#FF3811"
           >
             <path
               strokeLinecap="round"

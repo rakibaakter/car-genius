@@ -64,11 +64,26 @@ async function run() {
       res.send(result);
     });
 
+    // app.get("/bookings/:id", async (req, res) => {
+    //   const id = req.params.id;
+    //   const query = { _id: id };
+    //   const result = await bookingsCollection.findOne(query);
+    //   res.send(result);
+    // });
+
     app.post("/bookings", async (req, res) => {
       const booking = req.body;
       console.log(booking);
       const result = await bookingsCollection.insertOne(booking);
 
+      res.send(result);
+    });
+
+    app.delete("/bookings/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const query = { _id: id };
+      const result = await bookingsCollection.deleteOne(query);
       res.send(result);
     });
 
