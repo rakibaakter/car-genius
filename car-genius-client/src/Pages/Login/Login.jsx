@@ -5,6 +5,7 @@ import login from "../../assets/images/login/login.svg";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthHook } from "../../providers/Hooks/useAuthHook";
+import axios from "axios";
 
 const Login = () => {
   const { loginWithEmailPassword } = useAuthHook();
@@ -19,10 +20,16 @@ const Login = () => {
 
     loginWithEmailPassword(email, password)
       .then((userCredintial) => {
-        const user = userCredintial.user;
-        console.log(user);
+        const loggedUser = userCredintial.user;
+        console.log(loggedUser);
         alert("login succesfully");
-        navigate(location?.state ? location.state : "/");
+
+        const user = { email };
+        axios.post("http://localhost:5000/jwt", user).then((res) => {
+          console.log(res.data);
+        });
+
+        // navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         alert(error.message);
