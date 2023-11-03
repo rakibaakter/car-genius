@@ -1,14 +1,21 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const port = process.env.port || 5000;
 
 // middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use(cookieParser());
 
 // mongodb setup
 
@@ -33,9 +40,19 @@ async function run() {
       const user = req.body;
       console.log(user);
 
-      const token = jwt.sign(user, "secret", { expiresIn: "1h" });
+      const token = jwt.sign(user, process.env.ACCESS_SECRET_TOKEN, {
+        expiresIn: "12h",
+      });
 
-      res.send(token);
+      // const cookie = req.cookies;
+      // console.log(cookie);
+
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+        })
+        .send({ success: true });
     });
 
     // access data of services from carGenius database
@@ -72,6 +89,8 @@ async function run() {
       }
 
       const result = await bookingsCollection.find(query).toArray();
+
+      console.log(req.cookies.token);
       res.send(result);
     });
 

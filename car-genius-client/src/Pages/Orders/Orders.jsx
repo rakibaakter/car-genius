@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthHook } from "../../providers/Hooks/useAuthHook";
 import OrderItem from "./OrderItem";
+import axios from "axios";
 
 const Orders = () => {
   const { user } = useAuthHook();
@@ -9,13 +10,19 @@ const Orders = () => {
   const url = `http://localhost:5000/bookings?email=${user.email}`;
 
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log(data);
-        setOrders(data);
-      });
+    axios.get(url, { withCredentials: true }).then((res) => {
+      setOrders(res.data);
+    });
   }, [url]);
+
+  // useEffect(() => {
+  //   fetch(url)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       // console.log(data);
+  //       setOrders(data);
+  //     });
+  // }, [url]);
 
   // for delete an item
   const handleDeleteItem = (id) => {
