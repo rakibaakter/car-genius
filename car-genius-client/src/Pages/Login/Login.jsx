@@ -3,11 +3,13 @@ import { BsFacebook } from "react-icons/bs";
 import { FaLinkedinIn } from "react-icons/fa";
 import login from "../../assets/images/login/login.svg";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthHook } from "../../providers/Hooks/useAuthHook";
 
 const Login = () => {
   const { loginWithEmailPassword } = useAuthHook();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSignIn = (event) => {
     event.preventDefault();
@@ -20,6 +22,7 @@ const Login = () => {
         const user = userCredintial.user;
         console.log(user);
         alert("login succesfully");
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         alert(error.message);
