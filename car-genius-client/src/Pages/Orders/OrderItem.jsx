@@ -1,7 +1,8 @@
+import OutlineButton from "../../Shared/Buttons/OutlineButton";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
 
-const OrderItem = ({ order, handleDeleteItem }) => {
-  const { _id, date, title, img, price } = order;
+const OrderItem = ({ order, handleDeleteItem, handlePendingToConfirm }) => {
+  const { _id, date, title, img, price, status } = order;
 
   return (
     <tr>
@@ -39,7 +40,17 @@ const OrderItem = ({ order, handleDeleteItem }) => {
       </td>
       <td>${price}</td>
       <th>
-        <PrimaryButton>Pending</PrimaryButton>
+        {status === "confirm" ? (
+          <OutlineButton>Confirmed</OutlineButton>
+        ) : (
+          <button
+            onClick={() => {
+              handlePendingToConfirm(_id);
+            }}
+          >
+            <PrimaryButton>Pending</PrimaryButton>
+          </button>
+        )}
       </th>
     </tr>
   );

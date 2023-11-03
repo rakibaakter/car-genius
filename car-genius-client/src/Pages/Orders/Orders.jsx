@@ -37,6 +37,33 @@ const Orders = () => {
     }
   };
 
+  // for update an item
+  const handlePendingToConfirm = (id) => {
+    console.log(id);
+    const proceed = confirm("Are you want to confirm?");
+    if (proceed) {
+      fetch(`http://localhost:5000/bookings/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ status: "confirm" }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (data.modifiedCount > 0) {
+            alert("confirm");
+            const remaining = orders.filter((order) => order._id !== id);
+            const update = orders.find((order) => order._id === id);
+            update.status = "confirm";
+            const newOrders = [update, ...remaining];
+            setOrders(newOrders);
+          }
+        });
+    }
+  };
+
   return (
     <div>
       <h2>my order list {orders.length}</h2>
@@ -74,6 +101,7 @@ const Orders = () => {
                 key={order._id}
                 order={order}
                 handleDeleteItem={handleDeleteItem}
+                handlePendingToConfirm={handlePendingToConfirm}
               />
             ))}
           </tbody>
