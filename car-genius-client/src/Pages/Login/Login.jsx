@@ -5,7 +5,6 @@ import login from "../../assets/images/login/login.svg";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthHook } from "../../providers/Hooks/useAuthHook";
-import axios from "axios";
 
 const Login = () => {
   const { loginWithEmailPassword } = useAuthHook();
@@ -34,7 +33,7 @@ const Login = () => {
         //     }
         //   });
 
-        // navigate(location?.state ? location.state : "/");
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         alert(error.message);

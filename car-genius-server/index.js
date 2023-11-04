@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
@@ -14,22 +15,22 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
-// custom middleware
-// const verifyToken = async (req, res, next) => {
-//   const token = req.cookies.token;
-//   console.log(token);
-//   if (!token) {
-//     return res.status(401).send({ message: "unauthorized" });
-//   }
-//   jwt.verify(token, process.env.ACCESS_SECRET_TOKEN, (err, decoded) => {
-//     if (err) {
-//       return res.status(401).send({ message: "unauthorized" });
-//     }
-//     req.user = decoded;
-//     next();
-//   });
-// };
+const verifyToken = async (req, res, next) => {
+  const token = req?.cookies?.token;
+  console.log("middleware token", token);
+  if (!token) {
+    return res.status(401).send({ message: "unauthorized" });
+  }
+  jwt.verify(token, process.env.ACCESS_SECRET_TOKEN, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ message: "unauthorized" });
+    }
+    req.user = decoded;
+    next();
+  });
+};
 
 // mongodb setup
 
@@ -99,8 +100,13 @@ async function run() {
     });
 
     // bookings info
-    app.get("/bookings", async (req, res) => {
+    app.get("/bookings", verifyToken, async (req, res) => {
       console.log(req.query.email);
+      console.log("cook user", req.user);
+
+      if (req.query.email !== req.user.email) {
+        return res.status(403).send({ message: "forbidden" });
+      }
 
       let query = {};
       if (req.query?.email) {
@@ -108,8 +114,6 @@ async function run() {
       }
 
       const result = await bookingsCollection.find(query).toArray();
-
-      // console.log(req.cookies.token);
       res.send(result);
     });
 
