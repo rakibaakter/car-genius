@@ -1,7 +1,6 @@
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
@@ -15,23 +14,22 @@ app.use(
   })
 );
 app.use(express.json());
-app.use(cookieParser());
 
 // custom middleware
-const verifyToken = async (req, res, next) => {
-  const token = req.cookies.token;
-  console.log(token);
-  if (!token) {
-    return res.status(401).send({ message: "unauthorized" });
-  }
-  jwt.verify(token, process.env.ACCESS_SECRET_TOKEN, (err, decoded) => {
-    if (err) {
-      return res.status(401).send({ message: "unauthorized" });
-    }
-    req.user = decoded;
-    next();
-  });
-};
+// const verifyToken = async (req, res, next) => {
+//   const token = req.cookies.token;
+//   console.log(token);
+//   if (!token) {
+//     return res.status(401).send({ message: "unauthorized" });
+//   }
+//   jwt.verify(token, process.env.ACCESS_SECRET_TOKEN, (err, decoded) => {
+//     if (err) {
+//       return res.status(401).send({ message: "unauthorized" });
+//     }
+//     req.user = decoded;
+//     next();
+//   });
+// };
 
 // mongodb setup
 
@@ -57,16 +55,14 @@ async function run() {
       console.log(user);
 
       const token = jwt.sign(user, process.env.ACCESS_SECRET_TOKEN, {
-        expiresIn: "12h",
+        expiresIn: "1h",
       });
-
-      // const cookie = req.cookies;
-      // console.log(cookie);
 
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: false,
+          secure: true,
+          sameSite: "none",
         })
         .send({ success: true });
     });
@@ -96,13 +92,8 @@ async function run() {
     });
 
     // bookings info
-    app.get("/bookings", verifyToken, async (req, res) => {
+    app.get("/bookings", async (req, res) => {
       console.log(req.query.email);
-      console.log("user of verified token", req.user);
-
-      if (req.user.email !== req.query.email) {
-        return res.status(403).send({ message: "forbidden" });
-      }
 
       let query = {};
       if (req.query?.email) {
@@ -114,13 +105,6 @@ async function run() {
       // console.log(req.cookies.token);
       res.send(result);
     });
-
-    // app.get("/bookings/:id", async (req, res) => {
-    //   const id = req.params.id;
-    //   const query = { _id: id };
-    //   const result = await bookingsCollection.findOne(query);
-    //   res.send(result);
-    // });
 
     app.post("/bookings", async (req, res) => {
       const booking = req.body;
