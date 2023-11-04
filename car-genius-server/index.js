@@ -67,6 +67,13 @@ async function run() {
         .send({ success: true });
     });
 
+    app.post("/logout", async (req, res) => {
+      const user = req.body;
+      console.log("logging out ", user);
+
+      res.clearCookie("token", { maxAge: 0 }).send({ success: true });
+    });
+
     // access data of services from carGenius database
     const serviceCollection = client.db("carGenius").collection("services");
     const bookingsCollection = client.db("carGenius").collection("bookings");
