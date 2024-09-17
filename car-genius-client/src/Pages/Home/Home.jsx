@@ -4,7 +4,7 @@ import ServiceContainer from "./Services/ServiceContainer";
 
 const Home = () => {
   return (
-    <div className="space-y-6 lg:space-y-20">
+    <div className="space-y-4 lg:space-y-20">
       <Banner />
       <About />
       <ServiceContainer />

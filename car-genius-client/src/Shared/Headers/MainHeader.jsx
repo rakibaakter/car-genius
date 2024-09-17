@@ -37,7 +37,7 @@ const MainHeader = () => {
     </>
   );
   return (
-    <nav className="lg:px-36 lg:py-4">
+    <nav className="lg:px-36 lg:py-2">
       <div className="navbar bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">
@@ -65,18 +65,14 @@ const MainHeader = () => {
             </ul>
           </div>
           <a className="btn btn-ghost normal-case text-xl">
-            <img
-              src={logo}
-              alt="car-doctor"
-              className="w-full h-10 md:h-12 lg:h-16"
-            />
+            <img src={logo} alt="car-doctor" className="w-full h-10 md:h-12" />
           </a>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navItems}</ul>
         </div>
         <div className="navbar-end">
-          <span className="flex md:gap-2 md:mr-4 text-2xl">
+          <span className="flex md:gap-2 md:mr-4 text-xl">
             <AiOutlineShoppingCart />
             <AiOutlineSearch />
           </span>
