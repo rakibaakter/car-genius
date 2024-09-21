@@ -10,7 +10,7 @@ const About = () => {
       <div className="hero-content justify-between flex-col-reverse lg:flex-row">
         <div className="lg:w-1/2 rounded-lg shadow-2xl relative">
           <img src={aboutPerson} className="w-full h-full rounded-lg" />
-          <div className="absolute top-2/3 lg:top-1/2 right-0 lg:-right-24 w-1/2 lg:w-2/3 border-white border-8">
+          <div className="absolute top-2/3 lg:top-1/2 right-0 lg:-right-24 w-1/2 lg:w-2/3 border-white border-8 rounded-md">
             <img src={parts} alt="" />
           </div>
         </div>
