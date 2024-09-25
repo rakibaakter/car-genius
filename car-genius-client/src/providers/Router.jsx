@@ -26,6 +26,7 @@ const Router = createBrowserRouter([
 
       {
         path: "/checkout/:id",
+
         element: (
           <PrivateRoute>
             <Checkout />

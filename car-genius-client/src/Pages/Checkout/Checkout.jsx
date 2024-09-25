@@ -1,16 +1,18 @@
-import { useLoaderData } from "react-router-dom";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
 import { useAuthHook } from "../../providers/Hooks/useAuthHook";
+import SharedBanner from "../../Shared/Headers/SharedBanner";
+import { useLoaderData } from "react-router-dom";
 
 const Checkout = () => {
   const { user } = useAuthHook();
-  const { _id, title, price, img } = useLoaderData();
+  const { _id } = useLoaderData();
 
   const handleCheckOut = (event) => {
     event.preventDefault();
     const form = event.target;
     const name = user?.name || form.name.value;
     const date = form.date.value;
+    const phone = form.phone.value;
     const email = user?.email || form.email.value;
     // const price = form.price.value;
 
@@ -18,10 +20,11 @@ const Checkout = () => {
       customerName: name,
       email,
       date,
-      _id,
-      title,
-      price,
-      img,
+      phone,
+      serviceId: _id,
+      // title,
+      // price,
+      // img,
     };
     // console.log(order);
 
@@ -43,8 +46,12 @@ const Checkout = () => {
 
   return (
     <div className="space-y-6 lg:space-y-20 text-center mt-10">
-      <h2 className="text-3xl font-semibold">Check out for {title}</h2>
-      <form onSubmit={handleCheckOut} className="card-body">
+      <SharedBanner title={"Checkout"} nav={"Service/Checkout"} />
+      {/* <h2 className="text-3xl font-semibold">Check out for {title}</h2> */}
+      <form
+        onSubmit={handleCheckOut}
+        className="card-body bg-gray-100 py-6 px-4 lg:px-20 rounded-md"
+      >
         <div className="flex flex-col md:flex-row justify-between gap-4">
           <div className="form-control md:w-1/2">
             <label className="label">
@@ -60,19 +67,6 @@ const Checkout = () => {
           </div>
           <div className="form-control md:w-1/2">
             <label className="label">
-              <span className="label-text">Date</span>
-            </label>
-            <input
-              type="date"
-              name="date"
-              className="input input-bordered"
-              required
-            />
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row justify-between gap-4">
-          <div className="form-control md:w-1/2">
-            <label className="label">
               <span className="label-text">Email</span>
             </label>
             <input
@@ -83,14 +77,26 @@ const Checkout = () => {
               required
             />
           </div>
+        </div>
+        <div className="flex flex-col md:flex-row justify-between gap-4">
           <div className="form-control md:w-1/2">
             <label className="label">
-              <span className="label-text">Price</span>
+              <span className="label-text">Phone</span>
             </label>
             <input
-              type="text"
-              name="price"
-              defaultValue={"$" + price}
+              type="number"
+              name="phone"
+              className="input input-bordered"
+              required
+            />
+          </div>
+          <div className="form-control md:w-1/2">
+            <label className="label">
+              <span className="label-text">Date</span>
+            </label>
+            <input
+              type="date"
+              name="date"
               className="input input-bordered"
               required
             />
