@@ -76,9 +76,8 @@ const MainHeader = () => {
             <AiOutlineShoppingCart />
             <AiOutlineSearch />
           </span>
-          {/* <OutlineButton>Appointment</OutlineButton> */}
           {user ? (
-            <div>
+            <div className="flex items-center">
               <span className="mx-2">{user?.displayName}</span>
               <button onClick={logOut}>
                 <OutlineButton>LogOut</OutlineButton>

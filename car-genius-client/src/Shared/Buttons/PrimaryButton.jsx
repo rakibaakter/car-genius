@@ -1,6 +1,6 @@
 const OutlineButton = ({ children }) => {
   return (
-    <button className="btn p-4 text-white bg-[#FF3811] hover:bg-white hover:text-[#FF3811]">
+    <button className=" uppercase py-2 px-4 rounded-md text-white bg-[#FF3811] border hover:bg-white hover:text-[#FF3811]">
       {children}
     </button>
   );
