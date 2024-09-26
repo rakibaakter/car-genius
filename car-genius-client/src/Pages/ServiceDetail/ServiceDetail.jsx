@@ -95,7 +95,7 @@ const ServiceDetail = () => {
                 }`}
               >
                 <Link
-                  to={`/service/${_id}`}
+                  to={`/service/${service._id}`}
                   className="flex justify-between items-center"
                 >
                   <span>{service.title}</span>

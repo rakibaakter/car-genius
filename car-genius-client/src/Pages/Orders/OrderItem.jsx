@@ -1,8 +1,20 @@
+import axios from "axios";
 import OutlineButton from "../../Shared/Buttons/OutlineButton";
 import PrimaryButton from "../../Shared/Buttons/PrimaryButton";
+import { useEffect, useState } from "react";
 
 const OrderItem = ({ order, handleDeleteItem, handlePendingToConfirm }) => {
-  const { _id, date, title, img, price, status } = order;
+  const { _id, date, serviceId } = order;
+  const [service, setService] = useState();
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/services/${serviceId}`).then((res) => {
+      console.log(res.data);
+      setService(res.data);
+    });
+  }, [serviceId]);
+
+  console.log(service);
 
   return (
     <tr>
@@ -30,15 +42,15 @@ const OrderItem = ({ order, handleDeleteItem, handlePendingToConfirm }) => {
       <td>
         <div className="flex items-center space-x-3">
           <div className="avatar w-32 h-24">
-            <img src={img} alt={title} />
+            <img src={service?.img} alt={service?.title} />
           </div>
           <div>
-            <div className="font-bold">{title}</div>
+            <div className="font-bold">{service?.title}</div>
             <div className="text-sm opacity-50">{date}</div>
           </div>
         </div>
       </td>
-      <td>${price}</td>
+      <td>${service?.price}</td>
       <th>
         {status === "confirm" ? (
           <OutlineButton>Confirmed</OutlineButton>
